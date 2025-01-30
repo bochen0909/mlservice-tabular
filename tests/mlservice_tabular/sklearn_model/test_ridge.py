@@ -7,7 +7,7 @@ import joblib
 import pickle
 import pytest
 from fastapi.testclient import TestClient
-from mlservice_tabular.sklearn import RidgeModel
+from mlservice_tabular.sklearn_model import RidgeModel
 from mlservice.main import setup_routes, app
 
 def read_prediction_file(file_path):

@@ -8,7 +8,7 @@ import pickle
 import pytest
 from fastapi.testclient import TestClient
 from sklearn.linear_model import LogisticRegression
-from mlservice_tabular.sklearn import LogisticRegressionModel
+from mlservice_tabular.sklearn_model import LogisticRegressionModel
 from mlservice.main import setup_routes, app
 
 def read_prediction_file(file_path):
