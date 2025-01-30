@@ -11,7 +11,7 @@ import pickle
 from datetime import datetime
 from fastapi.testclient import TestClient
 from sklearn.linear_model import LogisticRegression
-from mlservice_tabular.sklearn.tab_model import RidgeModel, LogisticRegressionModel
+from mlservice_tabular.sklearn import RidgeModel, LogisticRegressionModel
 from mlservice.core.tabml import TabModel, TabClassification
 from mlservice.main import setup_routes, app
 
