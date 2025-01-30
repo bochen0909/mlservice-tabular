@@ -5,7 +5,7 @@ from mlservice.core.tabml import TabRegression
 from mlservice.core.ml import model_endpoints
 
 @model_endpoints("sklearn/random_forest")
-class RandomForestModel(TabRegression):
+class RandomForestRegressionModel(TabRegression):
     def __init__(self, params=None):
         super().__init__(params)
         self.model = RandomForestRegressor(**self.hyperparameters)

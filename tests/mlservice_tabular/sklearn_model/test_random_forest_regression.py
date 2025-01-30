@@ -7,7 +7,7 @@ import joblib
 import pickle
 import pytest
 from fastapi.testclient import TestClient
-from mlservice_tabular.sklearn_model import RandomForestModel
+from mlservice_tabular.sklearn_model import RandomForestRegressionModel
 from mlservice.main import setup_routes, app
 
 def read_prediction_file(file_path):
@@ -16,7 +16,7 @@ def read_prediction_file(file_path):
 
 @pytest.fixture
 def random_forest_model():
-    return RandomForestModel(params={"hyperparameters": {"n_estimators": 100}, "columns": {"target": "target"}})
+    return RandomForestRegressionModel(params={"hyperparameters": {"n_estimators": 100}, "columns": {"target": "target"}})
 
 @pytest.fixture
 def sample_data():
@@ -35,16 +35,16 @@ def client():
 
 # Test decorator functionality
 def test_model_endpoints_decorator():
-    assert hasattr(RandomForestModel, 'router'), "Decorator should add router attribute to model class"
-    assert RandomForestModel.router.prefix == "/model/sklearn/random_forest", "Router should have correct prefix"
+    assert hasattr(RandomForestRegressionModel, 'router'), "Decorator should add router attribute to model class"
+    assert RandomForestRegressionModel.router.prefix == "/model/sklearn/random_forest", "Router should have correct prefix"
 
 # Model functionality tests
 def test_model_initialization():
-    model = RandomForestModel(params={"hyperparameters": {"n_estimators": 50}})
+    model = RandomForestRegressionModel(params={"hyperparameters": {"n_estimators": 50}})
     assert model.hyperparameters["n_estimators"] == 50
     
     # Test default params
-    model = RandomForestModel()
+    model = RandomForestRegressionModel()
     assert isinstance(model.model.n_estimators, int)
 
 def test_train(random_forest_model, sample_data, tmp_path):
@@ -98,7 +98,7 @@ def test_load_model(random_forest_model, sample_data, tmp_path):
     
     assert hasattr(loaded_model.model, 'estimators_')
     assert hasattr(loaded_model.__class__, 'router')
-    assert isinstance(loaded_model, RandomForestModel)
+    assert isinstance(loaded_model, RandomForestRegressionModel)
     
     # Test prediction with loaded model
     predict_path = tmp_path / "predict.csv"
