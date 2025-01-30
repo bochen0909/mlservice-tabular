@@ -24,16 +24,18 @@ These base classes handle:
 
 ### 2. Create the Model File
 
-Create a new Python file in `mlservice_tabular/sklearn_model/` named after your model:
+Create a new Python file in `mlservice_tabular/{type}_model/` named after your model:
+
+(Type is used to organize the modules, for example if the model is derived from `sklearn`, make it as `mlservice_tabular/sklearn_model/`)
 
 ```python
 from typing import Any, Optional
 import pandas as pd
-from sklearn.some_module import YourModel
+from {type}.some_module import YourModel
 from mlservice.core.tabml import TabRegression  # or TabClassification
 from mlservice.core.ml import model_endpoints
 
-@model_endpoints("sklearn/your_model_name")
+@model_endpoints("{type}/your_model_name")
 class YourModelClass(TabRegression):  # or TabClassification
     def __init__(self, params=None):
         super().__init__(params)
@@ -80,25 +82,25 @@ class YourModelClass(TabRegression):  # or TabClassification
 
 1. Add `@model_endpoints` decorator with your model's endpoint path:
 ```python
-@model_endpoints("sklearn/your_model_name")
+@model_endpoints("{type}/your_model_name")
 ```
 
-2. Add to `mlservice_tabular/sklearn_model/__init__.py`:
+2. Add to `mlservice_tabular/{type}_model/__init__.py`:
 ```python
-from mlservice_tabular.sklearn_model.your_model import YourModelClass
+from mlservice_tabular.{type}_model.your_model import YourModelClass
 
 __all__ = [..., 'YourModelClass']
 ```
 
 ### 5. Testing
 
-Create a test file in `tests/mlservice_tabular/sklearn_model/test_your_model.py`:
+Create a test file in `tests/mlservice_tabular/{type}_model/test_your_model.py`:
 
 ```python
 import numpy as np
 import pandas as pd
 import pytest
-from mlservice_tabular.sklearn_model.your_model import YourModelClass
+from mlservice_tabular.{type}_model.your_model import YourModelClass
 
 def test_model_training():
     # Create sample data
@@ -189,7 +191,7 @@ After adding your model, it can be used through the API:
 
 ```bash
 # Training
-curl -X POST "http://localhost:8000/sklearn/your_model_name/train" \
+curl -X POST "http://localhost:8000/{type}/your_model_name/train" \
      -H "Content-Type: application/json" \
      -d '{
            "data": [...],
@@ -198,7 +200,7 @@ curl -X POST "http://localhost:8000/sklearn/your_model_name/train" \
          }'
 
 # Prediction
-curl -X POST "http://localhost:8000/sklearn/your_model_name/predict" \
+curl -X POST "http://localhost:8000/{type}/your_model_name/predict" \
      -H "Content-Type: application/json" \
      -d '{
            "data": [...]
