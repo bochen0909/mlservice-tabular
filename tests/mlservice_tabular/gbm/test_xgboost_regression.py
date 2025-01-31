@@ -45,7 +45,7 @@ def test_model_initialization():
     
     # Test default params
     model = XGBoostRegressionModel()
-    assert isinstance(model.model.n_estimators, int)
+    assert model.model.n_estimators == 100  # Check default value
 
 def test_train(xgboost_model, sample_data, tmp_path):
     os.environ['ML_HOME'] = str(tmp_path)
